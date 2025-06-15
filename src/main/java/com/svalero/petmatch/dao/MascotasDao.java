@@ -107,4 +107,35 @@ public class MascotasDao {
     }
     return null;
 }
+public List<Mascota> search(String especie, Boolean adoptado, Integer idRefugio) throws SQLException {
+    StringBuilder sql = new StringBuilder("SELECT * FROM mascotas WHERE 1=1");
+    List<Object> params = new ArrayList<>();
+
+    if (especie != null && !especie.isEmpty()) {
+        sql.append(" AND especie = ?");
+        params.add(especie);
+    }
+    if (adoptado != null) {
+        sql.append(" AND adoptado = ?");
+        params.add(adoptado);
+    }
+    if (idRefugio != null) {
+        sql.append(" AND refugio_id = ?");
+        params.add(idRefugio);
+    }
+
+    try (PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < params.size(); i++) {
+            ps.setObject(i + 1, params.get(i));
+        }
+        List<Mascota> list = new ArrayList<>();
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapear(rs));
+            }
+        }
+        return list;
+    }
+}
+
 }

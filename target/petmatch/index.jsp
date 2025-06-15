@@ -64,7 +64,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/263/263114.png" height="40" alt="Icono refugios">
                 <h5 class="mt-3 text-orange">Refugios</h5>
                 <p class="text-brown">Colabora con organizaciones cercanas</p>
-                <a href="<%=request.getContextPath()%>/listarRefugios" class="btn btn-sm btn-outline-primary" style="border-color:#FF7700; color:#FF7700;">Ver refugios</a>
+                <a href="<%=request.getContextPath()%>/listarRefugios.jsp" class="btn btn-sm btn-outline-primary" style="border-color:#FF7700; color:#FF7700;">Ver refugios</a>
             </div>
         </div>
         <div class="col-md-3 mb-4">

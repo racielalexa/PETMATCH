@@ -16,46 +16,90 @@ import java.util.List;
 
 @WebServlet("/listarmascotas")
 public class ListarMascotasServlet extends HttpServlet {
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-    HttpSession session = req.getSession(false);
-    Usuario usuario = session != null ? (Usuario) session.getAttribute("usuario") : null;
-    String rol = usuario != null ? usuario.getRol() : "guest";
+        // 1) Obtener rol
+        HttpSession session = req.getSession(false);
+        Usuario usuario = session != null 
+            ? (Usuario) session.getAttribute("usuario") 
+            : null;
+        String rol = usuario != null ? usuario.getRol() : "guest";
 
-    int currentPage = 1;
-    String sp = req.getParameter("page");
-    if (sp != null) {
-      try { currentPage = Integer.parseInt(sp); }
-      catch(NumberFormatException ignored){}
+        // 2) Leer filtros de búsqueda
+        String especie      = req.getParameter("especie");
+        String adoptadoParam = req.getParameter("adoptado");
+        String refugioParam  = req.getParameter("refugio");
+
+        Boolean adoptado = null;
+        if ("true".equals(adoptadoParam))  adoptado = true;
+        if ("false".equals(adoptadoParam)) adoptado = false;
+
+        Integer idRefugio = null;
+        if (refugioParam != null && !refugioParam.isEmpty()) {
+            try {
+                idRefugio = Integer.parseInt(refugioParam);
+            } catch (NumberFormatException ignored) {}
+        }
+
+        // 3) Leer paginación
+        int currentPage = 1;
+        String pageParam = req.getParameter("page");
+        if (pageParam != null) {
+            try { currentPage = Integer.parseInt(pageParam); }
+            catch (NumberFormatException ignored) {}
+        }
+        int pageSize = 9;
+
+        // 4) Conectar y obtener datos
+        try (Database db = new Database()) {
+            db.connect();
+            MascotasDao mascotasDao = new MascotasDao(db.getConnection());
+            RefugiosDao  refugiosDao = new RefugiosDao(db.getConnection());
+
+            List<Mascota> mascotas;
+            int totalItems;
+
+            // Si hay algún filtro, usar search
+            if ((especie != null && !especie.isEmpty())
+             || adoptado != null
+             || idRefugio != null) {
+
+                mascotas   = mascotasDao.search(especie, adoptado, idRefugio);
+                totalItems = mascotas.size();
+                currentPage = 1;
+                pageSize    = totalItems > 0 ? totalItems : 1;
+            } else {
+                // paginación normal
+                mascotas   = mascotasDao.getPage(currentPage, pageSize);
+                totalItems = mascotasDao.countAll();
+            }
+
+            List<Refugio> refugios = refugiosDao.obtenerTodos();
+
+            // 5) Pasar atributos a la JSP
+            req.setAttribute("mascotas", mascotas);
+            req.setAttribute("refugios", refugios);
+            req.setAttribute("rol", rol);
+
+            req.setAttribute("currentPage", currentPage);
+            req.setAttribute("pageSize", pageSize);
+            req.setAttribute("totalItems", totalItems);
+
+            // filtros para reponer el formulario
+            req.setAttribute("filtroEspecie", especie);
+            req.setAttribute("filtroAdoptado", adoptadoParam);
+            req.setAttribute("filtroRefugio", refugioParam);
+
+            req.getRequestDispatcher("/listarMascotas.jsp")
+               .forward(req, resp);
+
+        } catch (SQLException e) {
+            throw new ServletException("Error accediendo a la base de datos", e);
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
-    int pageSize = 9;
-
-    try {
-      Database db = new Database();
-      db.connect();
-
-      MascotasDao mascotasDao = new MascotasDao(db.getConnection());
-      RefugiosDao refugiosDao = new RefugiosDao(db.getConnection());
-      
-      List<Mascota> mascotas = mascotasDao.getPage(currentPage, pageSize);
-      List<Refugio> refugios = refugiosDao.obtenerTodos();
-      int totalItems = mascotasDao.countAll();
-
-      db.close();
-
-      req.setAttribute("mascotas", mascotas);
-      req.setAttribute("refugios", refugios);
-      req.setAttribute("rol", rol);
-      req.setAttribute("currentPage", currentPage);
-      req.setAttribute("pageSize", pageSize);
-      req.setAttribute("totalItems", totalItems);
-
-      req.getRequestDispatcher("/listarMascotas.jsp").forward(req, resp);
-    } catch(Exception e) {
-      e.printStackTrace();
-      resp.sendRedirect("error.jsp");
-    }
-  }
 }
-
