@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app>
+    <display-name>Pet Match application</display-name>
+
+    <context-param>
+        <description>Ruta para almacenar las imágenes de los juegos</description>
+        <param-name>imagePath</param-name>
+        <param-value>/home/astable/apache-tomcat-9.0.86/webapps/steam_images</param-value>
+    </context-param>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/img_mascotas/*</url-pattern>
+</servlet-mapping>
+</web-app>
