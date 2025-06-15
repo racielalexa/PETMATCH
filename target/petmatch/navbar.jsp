@@ -33,7 +33,7 @@
             <li class="nav-item"><a href="solicitudes" class="nav-link">Solicitudes de Adopción</a></li>
           <% } else { %>
             <!-- Opciones para usuario normal -->
-            <li class="nav-item"><a href="solicitudes.jsp" class="nav-link">Mis Solicitudes</a></li>
+            <li class="nav-item"><a href="solicitudes" class="nav-link">Mis Solicitudes</a></li>
           <% } %>
 
           <li class="nav-item"><a href="logout" class="nav-link text-danger">Cerrar sesión</a></li>
