@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Getter
-public class Database {
+public class Database implements AutoCloseable  {
 
     private Connection connection;
 

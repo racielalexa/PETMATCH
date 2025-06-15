@@ -6,12 +6,17 @@ com\svalero\petmatch\model\Usuario.class
 com\svalero\petmatch\dao\MascotasDao.class
 com\svalero\petmatch\database\Database.class
 com\svalero\petmatch\model\Mascota.class
+com\svalero\petmatch\servlet\EliminarMascotaAJAXServlet.class
 com\svalero\petmatch\servlet\ProcesarSolicitudServlet.class
 com\svalero\petmatch\model\Refugio.class
 com\svalero\petmatch\servlet\LoginServlet.class
 com\svalero\petmatch\dao\AdopcionesDao.class
+com\svalero\petmatch\servlet\InsertarMascotaAJAXServlet.class
+com\svalero\petmatch\servlet\ListarMascotasServlet.class
 com\svalero\petmatch\servlet\SolicitarAdopcionServlet.class
 com\svalero\petmatch\dao\RefugiosDao.class
+com\svalero\petmatch\servlet\VerMascotaServlet.class
 com\svalero\petmatch\dao\UsuariosDao.class
+com\svalero\petmatch\servlet\EditarMascotaAJAXServlet.class
 com\svalero\petmatch\model\Adopcion.class
 com\svalero\petmatch\servlet\CrearRefugioServlet.class
