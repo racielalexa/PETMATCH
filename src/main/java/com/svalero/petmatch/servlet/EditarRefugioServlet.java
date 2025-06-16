@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
+
 import java.sql.Date;
 
 @WebServlet("/editar-refugio")

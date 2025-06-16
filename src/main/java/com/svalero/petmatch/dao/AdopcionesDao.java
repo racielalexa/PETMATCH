@@ -39,12 +39,12 @@ public List<Map<String, Object>> getAllWithUsuario() {
         while (rs.next()) {
             Map<String, Object> mapa = new HashMap<>();
             mapa.put("id", rs.getInt("id"));
-            mapa.put("usuarioId", rs.getInt("usuario_id"));
-            mapa.put("mascotaId", rs.getInt("mascota_id"));
-            mapa.put("fechaSolicitud", rs.getDate("fecha_solicitud"));
+            mapa.put("usuario_id", rs.getInt("usuario_id"));
+            mapa.put("mascota_id", rs.getInt("mascota_id"));
+            mapa.put("fecha_solicitud", rs.getDate("fecha_solicitud"));
             mapa.put("aprobada", rs.getBoolean("aprobada"));
-            mapa.put("nombreUsuario", rs.getString("nombre_usuario"));
-            mapa.put("emailUsuario", rs.getString("email_usuario"));
+            mapa.put("nombre_usuario", rs.getString("nombre_usuario"));
+            mapa.put("email_usuario", rs.getString("email_usuario"));
             lista.add(mapa);
         }
     } catch (SQLException e) {

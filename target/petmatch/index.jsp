@@ -64,15 +64,15 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/263/263114.png" height="40" alt="Icono refugios">
                 <h5 class="mt-3 text-orange">Refugios</h5>
                 <p class="text-brown">Colabora con organizaciones cercanas</p>
-                <a href="<%=request.getContextPath()%>/listarRefugios.jsp" class="btn btn-sm btn-outline-primary" style="border-color:#FF7700; color:#FF7700;">Ver refugios</a>
+                <a href="<%=request.getContextPath()%>/listarRefugios" class="btn btn-sm btn-outline-primary" style="border-color:#FF7700; color:#FF7700;">Ver refugios</a>
             </div>
         </div>
         <div class="col-md-3 mb-4">
             <div class="p-4 border rounded-4 shadow-sm bg-white">
-                <img src="https://cdn-icons-png.flaticon.com/128/4100/4100759.png" height="40" alt="Icono adopciones">
-                <h5 class="mt-3 text-orange">Adopciones recientes</h5>
-                <p class="text-brown">Historias felices que inspiran</p>
-                <a href="<%=request.getContextPath()%>/adopciones.jsp" class="btn btn-sm btn-outline-primary" style="border-color:#FF7700; color:#FF7700;">Ver adopciones</a>
+                <img src="https://cdn-icons-png.flaticon.com/128/4100/4100759.png" height="40" alt="Icono Usuarios">
+                <h5 class="mt-3 text-orange">Nuestros usuarios</h5>
+                <p class="text-brown">conoce a nuestros Adoptantes y a los que lo hacen posible</p>
+                <a href="<%=request.getContextPath()%>/listarUsuarios.jsp" class="btn btn-sm btn-outline-primary" style="border-color:#FF7700; color:#FF7700;">Ver Usuarios</a>
             </div>
         </div>
         <div class="col-md-3 mb-4">
