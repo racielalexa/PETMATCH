@@ -34,7 +34,7 @@
 %>
 
 <%@ include file="header.jsp" %>
-<%@ include file="navbar.jsp" %>
+<%@ include file="navbar.jsp" %>  <%-- Aquí está el navbar incluido --%>
 
 <div class="container py-4">
   <h2 class="text-center mb-4">Listado de Mascotas</h2>

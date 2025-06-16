@@ -14,7 +14,7 @@
     <div id="navMenu" class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a href="listarMascotas.jsp" class="nav-link">Mascotas</a></li>
-        <li class="nav-item"><a href="listarRefugios.jsp" class="nav-link">Refugios</a></li>
+        <li class="nav-item"><a href="listarRefugios" class="nav-link">Refugios</a></li>
         <li class="nav-item"><a href="donaciones.jsp" class="nav-link">Contribuye</a></li>
       </ul>
 

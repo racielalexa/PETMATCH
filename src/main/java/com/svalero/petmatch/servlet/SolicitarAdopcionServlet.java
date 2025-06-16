@@ -36,7 +36,7 @@ public class SolicitarAdopcionServlet extends HttpServlet {
 
             database.close();
 
-            resp.sendRedirect("misMatches.jsp");
+            resp.sendRedirect("solicitudes");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("error.jsp");
