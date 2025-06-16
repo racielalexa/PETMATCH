@@ -29,7 +29,6 @@
 
           <% if ("admin".equals(rol)) { %>
             <!-- Opciones para admin/refugio -->
-            <li class="nav-item"><a href="nuevaMascota.jsp" class="nav-link">Añadir Mascota</a></li>
             <li class="nav-item"><a href="solicitudes" class="nav-link">Solicitudes de Adopción</a></li>
           <% } else { %>
             <!-- Opciones para usuario normal -->

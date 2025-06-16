@@ -1,36 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List, java.util.stream.Collectors" %>
-<%@ page import="com.svalero.petmatch.dao.RefugiosDao" %>
-<%@ page import="com.svalero.petmatch.database.Database" %>
+<%@ page import="java.util.List" %>
 <%@ page import="com.svalero.petmatch.model.Refugio" %>
 
 <%
-    // Configuración de paginación
-    int currentPage = 1, pageSize = 5;
-    String sp = request.getParameter("page");
-    try {
-      if (sp != null) currentPage = Math.max(1, Integer.parseInt(sp));
-    } catch (Exception ignored) {}
-
-    // Carga completa de refugios
-    Database db = new Database();
-    db.connect();
-    RefugiosDao dao = new RefugiosDao(db.getConnection());
-    List<Refugio> all = dao.obtenerTodos();
-    db.close();
-
-    int total = all.size();
-    int pageCount = (int) Math.ceil(total / (double) pageSize);
-    if (pageCount < 1) pageCount = 1;
-    if (currentPage > pageCount) currentPage = pageCount;
-
-    int start = (currentPage - 1) * pageSize;
-    int end = Math.min(start + pageSize, total);
-    List<Refugio> subs = all.subList(start, end);
-
-    request.setAttribute("refugios", subs);
-    request.setAttribute("currentPage", currentPage);
-    request.setAttribute("pageCount", pageCount);
+    // La variable 'rol' se obtiene de navbar.jsp (NO declarar aquí).
+    int currentPage = request.getAttribute("currentPage") != null ? (Integer) request.getAttribute("currentPage") : 1;
+    int pageCount   = request.getAttribute("pageCount") != null   ? (Integer) request.getAttribute("pageCount")   : 1;
+    List<Refugio> refugios = (List<Refugio>) request.getAttribute("refugios");
+    if (refugios == null) refugios = java.util.Collections.emptyList();
+    String cp = request.getContextPath();
 %>
 
 <%@ include file="header.jsp" %>
@@ -38,20 +16,40 @@
 
 <div class="container py-5">
   <h2 class="text-center mb-4">Listado de Refugios</h2>
+
+  <% if ("admin".equals(rol)) { %>
+    <div class="mb-3 text-end">
+      <a href="<%= cp %>/formRefugio.jsp" class="btn btn-primary">Añadir refugio</a>
+    </div>
+  <% } %>
+
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <%
-      List<Refugio> refugios = (List<Refugio>) request.getAttribute("refugios");
-      for (Refugio r : refugios) {
-    %>
+    <% for (Refugio r : refugios) { %>
       <div class="col">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <h5 class="card-title text-primary"><%= r.getNombre() %></h5>
             <p class="card-text">
-              📍 <%= r.getDireccion() %><br/>
-              📧 <%= r.getEmailContacto() %><br/>
-              📞 <%= r.getTelefono() %>
+              <b>Dirección:</b> <%= r.getDireccion() %><br/>
+              <b>Email:</b> <%= r.getEmailContacto() %><br/>
+              <b>Teléfono:</b> <%= r.getTelefono() %><br/>
+              <b>Web:</b> <%= r.getWeb() %><br/>
+              <b>Activo:</b> <%= r.isActivo() ? "Sí" : "No" %><br/>
+              <b>Fecha alta:</b> <%= r.getFechaAlta() %>
             </p>
+          </div>
+          <div class="card-footer bg-white border-top-0 d-flex justify-content-between flex-wrap">
+            <a href="<%= cp %>/detalleRefugio?id=<%= r.getId() %>" class="btn btn-info btn-sm mb-1">
+              Ver detalle
+            </a>
+            <% if ("admin".equals(rol)) { %>
+              <a href="<%= cp %>/editar-refugio?id=<%= r.getId() %>" class="btn btn-warning btn-sm mb-1">Editar</a>
+              <a href="<%= cp %>/eliminar-refugio?id=<%= r.getId() %>"
+                 class="btn btn-danger btn-sm mb-1"
+                 onclick="return confirm('¿Seguro que quieres eliminar este refugio?');">
+                Eliminar
+              </a>
+            <% } %>
           </div>
         </div>
       </div>
@@ -64,9 +62,11 @@
       <li class="page-item <%= currentPage <= 1 ? "disabled" : "" %>">
         <a class="page-link" href="?page=<%= currentPage - 1 %>">Anterior</a>
       </li>
-      <li class="page-item active">
-        <span class="page-link"><%= currentPage %></span>
-      </li>
+      <% for (int i = 1; i <= pageCount; i++) { %>
+        <li class="page-item <%= currentPage == i ? "active" : "" %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
       <li class="page-item <%= currentPage >= pageCount ? "disabled" : "" %>">
         <a class="page-link" href="?page=<%= currentPage + 1 %>">Siguiente</a>
       </li>
