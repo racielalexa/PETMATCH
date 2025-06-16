@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.svalero.petmatch.model.Refugio" %>
 
+
 <%
     // La variable 'rol' se obtiene de navbar.jsp (NO declarar aquí).
     int currentPage = request.getAttribute("currentPage") != null ? (Integer) request.getAttribute("currentPage") : 1;

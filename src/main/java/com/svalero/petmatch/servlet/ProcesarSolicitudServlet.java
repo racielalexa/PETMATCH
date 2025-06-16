@@ -1,7 +1,7 @@
 package com.svalero.petmatch.servlet;
 
 import com.svalero.petmatch.dao.AdopcionesDao;
-import com.svalero.petmatch.database.Database;  // <--- Importa esto
+import com.svalero.petmatch.database.Database;  
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,23 +14,30 @@ public class ProcesarSolicitudServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        boolean aprobado = Boolean.parseBoolean(req.getParameter("aprobar"));
+        int idSolicitud = Integer.parseInt(req.getParameter("id"));
+        boolean aprobar = Boolean.parseBoolean(req.getParameter("aprobar"));
 
-        Database db = new Database(); 
         try {
-            db.connect();
-            AdopcionesDao dao = new AdopcionesDao(db.getConnection());
-            if (aprobado) {
-                dao.aprobarSolicitud(id);
-            } else {
-                dao.rechazarSolicitud(id);
-            }
-            db.close();
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new ServletException("Error procesando la solicitud", e);
-        }
+            Database database = new Database();
+            database.connect();
+            AdopcionesDao dao = new AdopcionesDao(database.getConnection());
 
-        resp.sendRedirect(req.getContextPath() + "/solicitudes");
+            boolean exito;
+            if (aprobar) {
+                exito = dao.aprobarSolicitud(idSolicitud);
+            } else {
+                exito = dao.rechazarSolicitud(idSolicitud);
+            }
+            database.close();
+
+            if (exito) {
+                resp.sendRedirect("solicitudes");
+            } else {
+                resp.sendRedirect("error.jsp");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
     }
 }
